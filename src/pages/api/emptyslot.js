@@ -1,7 +1,11 @@
-import RollNumbers from "@/data/RollNumbers";
+import fs from "fs";
 
 export default function handler(req, res) {
-    RollNumbers.forEach((rollNumber, index) => {
-        if (rollNumber === null) res.status(200).json(index+1);
-    });
-}
+    const RollNumbers = JSON.parse(fs.readFileSync("./src/data/RollNumbers.json"));
+    const index = RollNumbers.findIndex((rollNumber) => rollNumber === null);
+    if (index !== -1) {
+      return res.status(200).json(index + 1);
+    } else {
+      return res.status(404).json(-1);
+    }
+}  
