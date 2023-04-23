@@ -32,4 +32,4 @@ yarn-error.log*
 .vercel
 
 # Ignore all json files in data folder
-# src/data/*.json
+src/data/*.json
