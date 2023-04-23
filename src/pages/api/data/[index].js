@@ -1,8 +1,10 @@
 import fs from "fs";
+import path from  "path";
 
 export default async function handler(req, res) {
   const { index } = req.query;
-  const RollNumbers = JSON.parse(fs.readFileSync("./src/data/RollNumbers.json"));
+  const rollNumbersPath = path.join(process.cwd(), "src/data/RollNumbers.json");
+  const RollNumbers = JSON.parse(rollNumbersPath);
 
   if (req.method === "DELETE") {
     RollNumbers[index - 1] = null;

@@ -1,7 +1,9 @@
 import fs from "fs";
+import path from "path";
 
 export default async function handler(req, res) {
-  const RollNumbers = JSON.parse(fs.readFileSync("./src/data/RollNumbers.json"));
+  const rollNumbersPath = path.join(process.cwd(), "src/data/RollNumbers.json");
+  const RollNumbers = JSON.parse(fs.readFileSync(rollNumbersPath));
   if (req.method === "POST") {
     const { rollNumber } = req.body;
     const isPresent = RollNumbers.includes(rollNumber);

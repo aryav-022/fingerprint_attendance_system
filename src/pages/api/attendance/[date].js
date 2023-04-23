@@ -1,7 +1,9 @@
 import fs from "fs";
+import path from "path";
 
 export default function handler(req, res) {
-    const attendance = JSON.parse(fs.readFileSync("./src/data/Attendance.json"));
+    const attendancePath = path.join(process.cwd(), "src/data/Attendance.json");
+    const attendance = JSON.parse(fs.readFileSync(attendancePath));
     let { date } = req.query;
     date = date.replaceAll("-", "/");
     const dateAttendance = attendance[date];

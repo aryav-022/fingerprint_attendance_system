@@ -1,8 +1,11 @@
 import fs from "fs";
+import path from "path";
 
 export default function handler(req, res) {
-    const RollNumbers = JSON.parse(fs.readFileSync("./src/data/RollNumbers.json"));
-    const attendance = JSON.parse(fs.readFileSync("./src/data/Attendance.json"));
+    const rollNumbersPath = path.join(process.cwd(), "src/data/RollNumbers.json");
+    const RollNumbers = JSON.parse(fs.readFileSync(rollNumbersPath));
+    const attendancePath = path.join(process.cwd(), "src/data/Attendance.json");
+    const attendance = JSON.parse(fs.readFileSync(attendancePath));
     if (req.method === "POST") {
         const { id } = req.body;
         const rollNumber = RollNumbers[parseInt(id) - 1];
