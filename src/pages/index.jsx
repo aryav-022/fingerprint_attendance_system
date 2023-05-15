@@ -2,12 +2,13 @@ import useToken from "@/contexts/useToken";
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import path from 'path';
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 
 const Home = ({ subjects, students, attendance, dates, admin, logged, name, email }) => {
   const [token, setToken] = useToken();
   const codeRef = useRef();
+  const [message, setMessage] = useState("");
 
   function joinClass() {
     const code = codeRef.current.value;
@@ -60,7 +61,7 @@ const Home = ({ subjects, students, attendance, dates, admin, logged, name, emai
           <div className="grid grid-cols-6 border border-gray-400">
             {/* Left */}
             <div className="border-r border-gray-400 flex flex-col">
-              <div className="h-10 border-b border-gray-400"></div>
+              <div className="h-10 border-b border-gray-400 text-green-300 flex items-center justify-center">{message}</div>
               {
                 subjectKeys.map((subject, index) => (
                   <div key={index} className="flex items-center justify-center h-10 border-gray-700 border-b">{admin ? subject[0]: subject}</div>
@@ -84,12 +85,17 @@ const Home = ({ subjects, students, attendance, dates, admin, logged, name, emai
                         <div key={index} className="w-32 h-full flex justify-center items-center border-r border-gray-700">
                           {
                             admin ? 
-                            <input type="checkbox" onChange={() => {
-                              fetch("/api/attendance/admin", {
+                            <input type="checkbox" onChange={async () => {
+                              await fetch("/api/attendance/admin", {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({token, date, student: subject[1]})
                               });
+                              setMessage("Updated!");
+                              setTimeout(() => {
+                                setMessage("");
+                              }
+                              , 2000);
                             }} defaultChecked={
                               attendance[subject[1]][date.replaceAll("/", "-")] ? true : false
                             } className="h-7 aspect-square" /> : 

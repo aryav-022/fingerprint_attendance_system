@@ -3,10 +3,15 @@ import Lottie from 'react-lottie';
 import animationData from '@/lotties/Biometry';
 import Link from "next/link";
 import useToken from "@/contexts/useToken";
+import { useRef } from "react";
 
 const Authentication = () => {
   const router = useRouter();
   const { pathname } = router;
+
+  const nameRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
 
   const defaultOptions = {
     loop: true,
@@ -21,28 +26,24 @@ const Authentication = () => {
 
   function authenticate(e) {
     e.preventDefault();
-    const form = e.target;
+
     const body = {
-      email: form.email.value,
-      password: form.password.value
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
     };
     if (pathname === '/auth/register') {
-      body.name = form.name.value;
+      body.name = nameRef.current.value;
     }
 
-    fetch(`/api/${pathname.slice(1)}`, {
+    fetch(`/api${pathname}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(body)
     }).then(res => res.json()).then(data => {
-      if (data.error) {
-        alert(data.error);
-      } else {
         setToken(data.token);
         router.push('/');
-      }
     });
   }
 
@@ -64,13 +65,13 @@ const Authentication = () => {
             pathname === '/auth/register' &&
             <>
               <label htmlFor="name">Name</label>
-              <input type="name" name="name" id="name" className="text-black w-full rounded bg-slate-200 p-2 mb-4" />
+              <input type="name" name="name" id="name" ref={nameRef} className="text-black w-full rounded bg-slate-200 p-2 mb-4" />
             </>
           }
           <label htmlFor="email">Email</label>
-          <input type="email" name="email" id="email" className="text-black w-full rounded bg-slate-200 p-2 mb-4" />
+          <input type="email" name="email" id="email" ref={emailRef} className="text-black w-full rounded bg-slate-200 p-2 mb-4" />
           <label htmlFor="password">Password</label>
-          <input type="password" name="password" id="password" className="text-black w-full rounded bg-slate-200 p-2 mb-4" />
+          <input type="password" name="password" id="password" ref={passwordRef} className="text-black w-full rounded bg-slate-200 p-2 mb-4" />
           <button type="submit" className="w-full rounded bg-slate-600 p-2 mb-4 hover:bg-slate-700">{pathname === '/auth/login' ? 'Login' : 'Register'}</button>
           <div className="flex justify-between">
             <Link href="/auth/forgotpassword" className="text-slate-300 hover:text-slate-400">Forgot Password?</Link>
