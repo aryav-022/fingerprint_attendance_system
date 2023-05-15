@@ -30,7 +30,7 @@ const Authentication = () => {
       body.name = form.name.value;
     }
 
-    fetch(`http://localhost:3000/api/${pathname.slice(1)}`, {
+    fetch(`/api/${pathname.slice(1)}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
