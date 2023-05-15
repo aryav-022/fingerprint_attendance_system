@@ -1,0 +1,23 @@
+[
+    {
+      "name": "Aryav",
+      "img": "/img/aryav.jpeg",
+      "emoji": "🙈",
+      "content": "Hello, my name is Aryav. I love learning about new technologies. I constantly find a way to delight in web development.",
+      "link": "https://aryavbhola.netlify.app"
+    },
+    {
+      "name": "Ashish",
+      "img": "/img/ashish.jpg",
+      "emoji": "🙉",
+      "content": "Hello, my name is Aryav. I love learning about new technologies. I constantly find a way to delight in web development.",
+      "link": "https://aryavbhola.netlify.app"
+    },
+    {
+      "name": "Shivam",
+      "img": "/img/shivam.jpg",
+      "emoji": "🙊",
+      "content": "Hello, my name is Aryav. I love learning about new technologies. I constantly find a way to delight in web development.",
+      "link": "https://aryavbhola.netlify.app"
+    }
+  ]

@@ -30,6 +30,3 @@ yarn-error.log*
 
 # vercel
 .vercel
-
-# Ignore all json files in data folder
-src/data/*.json
