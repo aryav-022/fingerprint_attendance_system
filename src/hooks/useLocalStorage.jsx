@@ -9,7 +9,7 @@ const useLocalStorage = (key, initialValue) => {
     document.cookie = `${key}=${value}; path=/; expires=Thu, 31 Dec 2099 23:59:59 GMT`;
 
     value != 'null' && setState(value);
-  }, [])
+  }, [key])
 
   function setValue(valueToStore) {
     localStorage.setItem(key, JSON.stringify(valueToStore));
