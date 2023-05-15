@@ -73,7 +73,7 @@ const Authentication = () => {
           <input type="password" name="password" id="password" className="text-black w-full rounded bg-slate-200 p-2 mb-4" />
           <button type="submit" className="w-full rounded bg-slate-600 p-2 mb-4 hover:bg-slate-700">{pathname === '/auth/login' ? 'Login' : 'Register'}</button>
           <div className="flex justify-between">
-            <Link href="/auth/forgot-password" className="text-slate-300 hover:text-slate-400">Forgot Password?</Link>
+            <Link href="/auth/forgotpassword" className="text-slate-300 hover:text-slate-400">Forgot Password?</Link>
             <Link href={pathname === '/auth/login' ? '/auth/register' : '/auth/login'} className="text-slate-300 hover:text-slate-400">{pathname === '/auth/login' ? "Register" : "Login"}</Link>
           </div>
           <hr className="my-4"></hr>
