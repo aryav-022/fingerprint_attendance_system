@@ -3,7 +3,7 @@ import Lottie from 'react-lottie';
 import animationData from '@/lotties/Biometry';
 import Link from "next/link";
 import useToken from "@/contexts/useToken";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 const Authentication = () => {
   const router = useRouter();
@@ -37,13 +37,11 @@ const Authentication = () => {
 
     fetch(`/api${pathname}`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     }).then(res => res.json()).then(data => {
-        setToken(data.token);
-        router.push('/');
+      setToken(data.token);
+      router.push('/');
     });
   }
 

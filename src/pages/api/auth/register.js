@@ -1,37 +1,26 @@
 import jwt from "jsonwebtoken";
-import fs from "fs";
-import path from "path";
+import User from "../../../../models/User";
+import connectDB from "../../../../middleware/mongoose";
 
-export default function handler(req, res) {
-    if (!req.body) {
+const handler = async (req, res) => {
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
         return res.status(400).json({ message: "No body provided" });
     }
-
-    const { name, email, password } = req.body;
     
-    const usersPath = path.join(process.cwd(), "src/data/Users.json");
-    const users = JSON.parse(fs.readFileSync(usersPath));
-    const user = users.find((user) => user.email === email);
+    const user = await User.findOne({ email });
+    
     if (user) {
         return res.status(404).json({ message: "User already exists" });
     }
     
-    users.push({ name, email, password, admin: false });
+    const newUser = new User({ name, email, password });
+    await newUser.save();
     
-    fs.writeFileSync(usersPath, JSON.stringify(users));
-
-    const attendancePath = path.join(process.cwd(), "src/data/Attendance.json");
-    const Attendance = JSON.parse(fs.readFileSync(attendancePath));
-
-    Attendance[email] = {
-        from: "2023-05-14",
-        to: "2023-07-28",
-        subjects: {}
-    }
-
-    fs.writeFileSync(attendancePath, JSON.stringify(Attendance));
-
     return res.json({
-        token: jwt.sign({ name, email }, process.env.JWT_SECRET)
+        token: jwt.sign({ name, email, admin: false }, process.env.JWT_SECRET)
     })
 }
+
+export default connectDB(handler);

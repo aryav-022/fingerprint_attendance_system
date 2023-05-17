@@ -1,36 +1,34 @@
-import fs from "fs";
-import path from "path";
+import User from "../../../models/User";
+import Admin from "../../../models/Admin";
+import connectDB from "../../../middleware/mongoose";
 
-export default function handler(req, res) {
+const handler = async (req, res) => {
     if (req.method === "POST") {
-        const { code, email, name } = req.body;
-
-        const AdminPath = path.join(process.cwd(), "src/data/Admins.json");
-        const Admins = JSON.parse(fs.readFileSync(AdminPath));
-
-        if (code in Admins) {
-            for (let i = 1; i < Admins[code].length; i++) {
-                if (Admins[code][i][1] === email) {
-                    return res.status(400).json("Already Present");
-                }
+        try {
+            const { code, email, name } = req.body;
+    
+            if (!code || !email || !name) {
+                return res.status(400).json({ message: "No body provided" });
             }
-
-            Admins[code].push([name, email]);
-            fs.writeFileSync(AdminPath, JSON.stringify(Admins));
-
-            const subject = Admins[code][0][2];
-
-            const AttendancePath = path.join(process.cwd(), "src/data/Attendance.json");
-            const Attendance = JSON.parse(fs.readFileSync(AttendancePath));
-
-            Attendance[email].subjects[subject] = {};
-
-            fs.writeFileSync(AttendancePath, JSON.stringify(Attendance));
-
-            return res.status(200).json("Added");
-        }
-        else {
-            return res.status(400).json("Invalid Code");
+            
+            const admin = await Admin.findOne({ email: code });
+            
+            if (!admin) {
+                return res.status(404).json({ message: "Incorrect Code" });
+            }
+            
+            admin.students.push(email);
+            await admin.save();
+            
+            const user = await User.findOne({ email });
+            user.subjects.push({ email: admin.email, subject: admin.subject });
+            user.save();
+    
+            return res.status(200).json({ message: "Subject added" });
+        } catch (err) {
+            return res.status(500).json({ message: "Internal Server Error" });
         }
     }
 }
+
+export default connectDB(handler);

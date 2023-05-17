@@ -1,6 +1,4 @@
 import jwt from "jsonwebtoken";
-import fs from "fs";
-import path from "path";
 
 export default function handler(req, res) {
     if (req.method === "POST") {
@@ -41,6 +39,7 @@ export default function handler(req, res) {
 
             return res.status(200).json({ message: "Attendance updated" });
         } catch (err) {
+            console.log(err);
             return res.status(500).json({ message: "Internal Server Error" });
         }
     }

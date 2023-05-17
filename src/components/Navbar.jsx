@@ -30,7 +30,7 @@ export default function Navbar() {
                 </li>
                 <li className="inline-block ml-12">
                     <Link href="/about" className={activeLink('/about')}>About</Link>
-                </li>
+                </li>               
             </ul>
             {
                 !token ? (

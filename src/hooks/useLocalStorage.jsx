@@ -4,21 +4,24 @@ const useLocalStorage = (key, initialValue) => {
   const [state, setState] = useState(initialValue);
   
   useEffect(() => {
-    const value = localStorage.getItem(key);
-    // Set Cookies
-    document.cookie = `${key}=${value}; path=/; expires=Thu, 31 Dec 2099 23:59:59 GMT`;
-
-    value != 'null' && setState(value);
+    if (typeof window !== "undefined") {
+      const value = localStorage.getItem(key);
+      // Set Cookies
+      document.cookie = `${key}=${value}; path=/; expires=Thu, 31 Dec 2099 23:59:59 GMT`;
+      value != 'null' && setState(value);
+    }
   }, [key])
 
   function setValue(valueToStore) {
-    localStorage.setItem(key, JSON.stringify(valueToStore));
-    // Set Cookies
-    document.cookie = `${key}=${valueToStore}; path=/; expires=Thu, 31 Dec 2099 23:59:59 GMT`;
-    setState(valueToStore);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(key, valueToStore);
+      // Set Cookies
+      document.cookie = `${key}=${valueToStore}; path=/; expires=Thu, 31 Dec 2099 23:59:59 GMT`;
+      setState(valueToStore);
+    }
   }
 
   return [state, setValue]
 }
 
-export default useLocalStorage
+export default useLocalStorage;
